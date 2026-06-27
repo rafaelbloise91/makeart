@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MakeArt — Beleza que Inspira</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Poppins', sans-serif; color: #2A2A2A; overflow-x: hidden; background: #fff; }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(10px); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .prod-card { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+    .prod-card:hover { box-shadow: 0 16px 48px rgba(193,50,92,0.18); transform: translateY(-5px); }
+    .prod-img { transition: transform 0.4s ease; }
+    .prod-card:hover .prod-img { transform: scale(1.07); }
+
+    .cat-card { cursor: pointer; overflow: hidden; border-radius: 18px; }
+    .cat-inner { transition: transform 0.45s ease; }
+    .cat-card:hover .cat-inner { transform: scale(1.07); }
+    .cat-label-line { transition: width 0.3s ease; }
+    .cat-card:hover .cat-label-line { width: 36px !important; }
+
+    .insta-item { overflow: hidden; cursor: pointer; position: relative; }
+    .insta-overlay { position: absolute; inset: 0; background: rgba(193,50,92,0.78); display: flex; align-items: center; justify-content: center; font-size: 32px; opacity: 0; transition: opacity 0.3s ease; border-radius: 12px; }
+    .insta-item:hover .insta-overlay { opacity: 1; }
+
+    .nav-link { text-decoration: none; transition: color 0.2s ease; position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1.5px; background: #C1325C; transition: width 0.25s ease; }
+    .nav-link:hover { color: #C1325C !important; }
+    .nav-link:hover::after { width: 100%; }
+
+    .btn-m { transition: filter 0.2s ease, transform 0.15s ease; cursor: pointer; }
+    .btn-m:hover { filter: brightness(0.87); transform: scale(1.02); }
+    .btn-ghost-m { transition: background 0.25s ease; cursor: pointer; }
+    .btn-ghost-m:hover { background: rgba(255,255,255,0.16) !important; }
+    .btn-outline-m { transition: background 0.25s ease, color 0.25s ease; cursor: pointer; }
+    .btn-outline-m:hover { background: #C1325C !important; color: #fff !important; }
+
+    .icon-btn { background: none; border: none; cursor: pointer; transition: color 0.2s ease, transform 0.15s ease; }
+    .icon-btn:hover { color: #C1325C !important; transform: scale(1.12); }
+    .heart-btn { background: none; border: none; cursor: pointer; transition: transform 0.2s ease; line-height: 1; }
+    .heart-btn:hover { transform: scale(1.28); }
+    .dot-btn { border: none; cursor: pointer; padding: 0; transition: transform 0.25s ease; }
+    .dot-btn:hover { transform: scale(1.3); }
+
+    .footer-link { text-decoration: none; transition: color 0.2s ease; }
+    .footer-link:hover { color: #C1325C !important; }
+    .social-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; }
+    .social-icon:hover { background: rgba(193,50,92,0.3); border-color: #C1325C; }
+
+    .scroll-ind { position: absolute; bottom: 32px; left: 50%; animation: scrollBounce 2.2s ease-in-out infinite; }
+    .whatsapp-fab { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,0.5) !important; }
+
+    @media (max-width: 768px) {
+      .nav-desktop  { display: none !important; }
+      .hamburger-btn { display: flex !important; }
+      .hero-title   { font-size: 48px !important; }
+      .hero-sub     { font-size: 14px !important; }
+      .hero-btns    { flex-direction: column !important; align-items: center !important; }
+      .benefits-inner { flex-wrap: wrap !important; }
+      .benefit-item { width: calc(50% - 8px) !important; justify-content: center !important; }
+      .cat-grid     { grid-template-columns: 1fr 1fr !important; }
+      .prod-grid    { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
+      .insta-grid   { grid-template-columns: 1fr 1fr 1fr !important; }
+      .footer-cols  { grid-template-columns: 1fr 1fr !important; gap: 36px !important; }
+      .footer-brand-col { grid-column: 1 / -1 !important; }
+      .nl-form      { flex-direction: column !important; align-items: center !important; }
+      .nl-input     { width: 100% !important; max-width: 340px !important; }
+      .login-btn-d  { display: none !important; }
+      .bottom-bar   { flex-direction: column !important; align-items: center !important; text-align: center !important; }
+    }
+    @media (max-width: 480px) {
+      .hero-title   { font-size: 36px !important; }
+      .prod-grid    { grid-template-columns: 1fr !important; }
+      .insta-grid   { grid-template-columns: 1fr 1fr !important; }
+      .cat-grid     { grid-template-columns: 1fr 1fr !important; }
+      .footer-cols  { grid-template-columns: 1fr !important; }
+    }
+    @media (min-width: 769px) {
+      .hamburger-btn      { display: none !important; }
+      .mobile-menu-overlay { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header style="position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; box-shadow:0 2px 16px rgba(0,0,0,0.08); border-bottom:1px solid #f0f0f0;">
+  <div style="max-width:1320px; margin:0 auto; padding:0 28px; height:74px; display:flex; align-items:center; gap:24px;">
+
+    <a href="#" style="text-decoration:none; flex-shrink:0; display:flex; flex-direction:column; align-items:flex-start; line-height:1.1;">
+      <span style="font-family:'Great Vibes',cursive; font-size:34px; color:#C1325C; display:block; line-height:1;">Makeart</span>
+      <span style="font-size:7.5px; color:#D4AF37; letter-spacing:5px; font-weight:600; display:block; margin-top:-2px;">BELEZA QUE INSPIRA</span>
+    </a>
+
+    <nav class="nav-desktop" style="flex:1; display:flex; justify-content:center; gap:36px;">
+      <a href="#"          class="nav-link" style="color:#444; font-size:13px; font-weight:500;">Início</a>
+      <a href="#loja"      class="nav-link" style="color:#444; font-size:13px; font-weight:500;">Loja</a>
+      <a href="#categorias" class="nav-link" style="color:#444; font-size:13px; font-weight:500;">Categorias</a>
+      <a href="#"          class="nav-link" style="color:#444; font-size:13px; font-weight:500;">Promoções</a>
+      <a href="#"          class="nav-link" style="color:#444; font-size:13px; font-weight:500;">Sobre</a>
+    </nav>
+
+    <div style="display:flex; align-items:center; gap:14px; flex-shrink:0; margin-left:auto;">
+      <button class="icon-btn" style="color:#555; font-size:17px; padding:4px;" title="Buscar">🔍</button>
+      <button class="icon-btn" style="color:#555; font-size:17px; padding:4px;" title="Favoritos">🤍</button>
+      <div style="position:relative;">
+        <button class="icon-btn" style="color:#555; font-size:17px; padding:4px;" title="Carrinho">🛒</button>
+        <div id="cart-badge" style="position:absolute; top:-6px; right:-6px; background:#C1325C; color:#fff; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; font-family:'Poppins',sans-serif; pointer-events:none;">0</div>
+      </div>
+      <button class="btn-m login-btn-d" style="background:#C1325C; color:#fff; border:none; padding:9px 22px; border-radius:50px; font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; letter-spacing:0.04em;">Entrar</button>
+      <button id="hamburger-btn" class="hamburger-btn" style="display:none; flex-direction:column; gap:5px; background:none; border:none; padding:4px; cursor:pointer; align-items:center;">
+        <span style="display:block; width:24px; height:2px; background:#2A2A2A; border-radius:2px;"></span>
+        <span style="display:block; width:24px; height:2px; background:#2A2A2A; border-radius:2px;"></span>
+        <span style="display:block; width:24px; height:2px; background:#2A2A2A; border-radius:2px;"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div id="mobile-menu" class="mobile-menu-overlay" style="display:none;">
+  <div id="menu-backdrop" style="position:fixed; inset:0; z-index:1100; background:rgba(0,0,0,0.62);"></div>
+  <nav style="position:fixed; top:0; right:0; width:300px; height:100%; z-index:1200; background:#2A2A2A; display:flex; flex-direction:column; padding:88px 36px 40px; gap:6px; box-shadow:-6px 0 40px rgba(0,0,0,0.5);">
+    <button id="close-menu-btn" style="position:absolute; top:24px; right:24px; background:none; border:none; color:#fff; font-size:26px; cursor:pointer; line-height:1; opacity:0.7;">✕</button>
+    <div style="margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,0.08);">
+      <span style="font-family:'Great Vibes',cursive; font-size:30px; color:#C1325C; display:block;">Makeart</span>
+    </div>
+    <a href="#"           class="nav-link" onclick="closeMenu()" style="color:rgba(255,255,255,0.8); font-size:16px; font-weight:500; text-decoration:none; padding:10px 0;">Início</a>
+    <a href="#loja"       class="nav-link" onclick="closeMenu()" style="color:rgba(255,255,255,0.8); font-size:16px; font-weight:500; text-decoration:none; padding:10px 0;">Loja</a>
+    <a href="#categorias" class="nav-link" onclick="closeMenu()" style="color:rgba(255,255,255,0.8); font-size:16px; font-weight:500; text-decoration:none; padding:10px 0;">Categorias</a>
+    <a href="#"           class="nav-link" onclick="closeMenu()" style="color:rgba(255,255,255,0.8); font-size:16px; font-weight:500; text-decoration:none; padding:10px 0;">Promoções</a>
+    <a href="#"           class="nav-link" onclick="closeMenu()" style="color:rgba(255,255,255,0.8); font-size:16px; font-weight:500; text-decoration:none; padding:10px 0;">Sobre</a>
+    <button class="btn-m" style="background:#C1325C; color:#fff; border:none; padding:14px 24px; border-radius:50px; font-size:15px; font-weight:600; font-family:'Poppins',sans-serif; margin-top:24px;">Entrar</button>
+  </nav>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section style="position:relative; min-height:100svh; background:#1e1e1e; display:flex; align-items:center; justify-content:center; overflow:hidden; padding-top:74px;">
+  <div style="position:absolute; inset:0; background:radial-gradient(ellipse 70% 70% at 25% 55%, rgba(193,50,92,0.28) 0%, transparent 65%);"></div>
+  <div style="position:absolute; inset:0; background:radial-gradient(ellipse 50% 50% at 78% 18%, rgba(212,175,55,0.1) 0%, transparent 55%);"></div>
+  <div style="position:absolute; inset:0; background-image:radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px); background-size:40px 40px;"></div>
+  <div style="position:absolute; top:18%; right:10%; width:80px; height:80px; border-radius:50%; background:rgba(193,50,92,0.12); animation:float 6s ease-in-out infinite;"></div>
+  <div style="position:absolute; bottom:22%; left:8%; width:50px; height:50px; border-radius:50%; background:rgba(212,175,55,0.1); animation:float 8s ease-in-out 1s infinite;"></div>
+
+  <div style="text-align:center; padding:56px 24px; position:relative; z-index:1; max-width:740px;">
+    <div style="display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:28px; animation:fadeUp 0.7s ease-out both;">
+      <span style="display:block; width:64px; height:1px; background:linear-gradient(to right, transparent, #D4AF37);"></span>
+      <span style="color:#D4AF37; font-size:11px; font-weight:500; letter-spacing:0.3em; white-space:nowrap;">✦ MakeArt ✦</span>
+      <span style="display:block; width:64px; height:1px; background:linear-gradient(to left, transparent, #D4AF37);"></span>
+    </div>
+
+    <h1 class="hero-title" style="font-family:'Great Vibes',cursive; font-size:78px; color:#fff; line-height:1.08; margin-bottom:22px; animation:fadeUp 0.7s 0.15s ease-out both; text-shadow:0 4px 40px rgba(193,50,92,0.4);">Beleza que Inspira</h1>
+
+    <p class="hero-sub" style="font-size:16px; font-weight:300; color:rgba(255,255,255,0.72); line-height:1.8; max-width:460px; margin:0 auto 40px; animation:fadeUp 0.7s 0.3s ease-out both;">Maquiagem e acessórios que transformam o seu look e celebram quem você é.</p>
+
+    <div class="hero-btns" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 0.7s 0.45s ease-out both;">
+      <button class="btn-m" onclick="document.getElementById('loja').scrollIntoView({behavior:'smooth'})" style="background:#C1325C; color:#fff; border:none; padding:16px 40px; border-radius:50px; font-size:15px; font-weight:600; font-family:'Poppins',sans-serif; letter-spacing:0.04em; box-shadow:0 4px 24px rgba(193,50,92,0.45);">Explorar a loja</button>
+      <button class="btn-ghost-m" style="background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.45); padding:14px 38px; border-radius:50px; font-size:15px; font-weight:600; font-family:'Poppins',sans-serif;">Ver novidades</button>
+    </div>
+  </div>
+
+  <div class="scroll-ind" style="display:flex; flex-direction:column; align-items:center; gap:7px; z-index:1;">
+    <span style="color:rgba(255,255,255,0.35); font-size:9px; letter-spacing:0.2em; font-weight:600;">SCROLL</span>
+    <div style="width:1px; height:44px; background:linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);"></div>
+    <span style="color:#D4AF37; font-size:13px;">↓</span>
+  </div>
+</section>
+
+<!-- ═══ BENEFITS BAR ═══ -->
+<section style="background:#C1325C; padding:0;">
+  <div class="benefits-inner" style="max-width:1320px; margin:0 auto; padding:20px 28px; display:flex; align-items:center; justify-content:space-around; gap:16px;">
+    <div class="benefit-item" style="display:flex; align-items:center; gap:10px; padding:10px 16px;">
+      <span style="font-size:22px; flex-shrink:0;">🚚</span>
+      <div>
+        <div style="color:#fff; font-size:13px; font-weight:600;">Frete Grátis</div>
+        <div style="color:rgba(255,255,255,0.75); font-size:11px;">acima de R$ 150</div>
+      </div>
+    </div>
+    <div style="width:1px; height:36px; background:rgba(255,255,255,0.2);"></div>
+    <div class="benefit-item" style="display:flex; align-items:center; gap:10px; padding:10px 16px;">
+      <span style="font-size:22px; flex-shrink:0;">🔒</span>
+      <div>
+        <div style="color:#fff; font-size:13px; font-weight:600;">Compra Segura</div>
+        <div style="color:rgba(255,255,255,0.75); font-size:11px;">pagamento protegido</div>
+      </div>
+    </div>
+    <div style="width:1px; height:36px; background:rgba(255,255,255,0.2);"></div>
+    <div class="benefit-item" style="display:flex; align-items:center; gap:10px; padding:10px 16px;">
+      <span style="font-size:22px; flex-shrink:0;">↩</span>
+      <div>
+        <div style="color:#fff; font-size:13px; font-weight:600;">Troca Fácil</div>
+        <div style="color:rgba(255,255,255,0.75); font-size:11px;">em até 30 dias</div>
+      </div>
+    </div>
+    <div style="width:1px; height:36px; background:rgba(255,255,255,0.2);"></div>
+    <div class="benefit-item" style="display:flex; align-items:center; gap:10px; padding:10px 16px;">
+      <span style="font-size:22px; flex-shrink:0;">💳</span>
+      <div>
+        <div style="color:#fff; font-size:13px; font-weight:600;">PIX com 5% OFF</div>
+        <div style="color:rgba(255,255,255,0.75); font-size:11px;">desconto à vista</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section id="categorias" class="reveal" style="background:#F8F8F8; padding:88px 28px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:52px;">
+      <div style="display:flex; align-items:center; gap:14px; justify-content:center; margin-bottom:14px;">
+        <span style="display:block; width:44px; height:1px; background:#D4AF37; opacity:0.55;"></span>
+        <span style="color:#D4AF37; font-size:10px; letter-spacing:0.28em; font-weight:600;">CATEGORIAS</span>
+        <span style="display:block; width:44px; height:1px; background:#D4AF37; opacity:0.55;"></span>
+      </div>
+      <h2 style="font-size:30px; font-weight:700; color:#2A2A2A;">Explore por Categoria</h2>
+    </div>
+    <div id="cat-grid" class="cat-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;"></div>
+  </div>
+</section>
+
+<!-- ═══ BEST SELLERS ═══ -->
+<section id="loja" class="reveal" style="background:#fff; padding:88px 28px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:52px;">
+      <div style="color:#D4AF37; font-size:11px; font-weight:600; letter-spacing:0.28em; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:10px;">
+        <span style="display:block; width:32px; height:1px; background:#D4AF37; opacity:0.6;"></span>
+        Os favoritos
+        <span style="display:block; width:32px; height:1px; background:#D4AF37; opacity:0.6;"></span>
+      </div>
+      <h2 style="font-size:34px; font-weight:700; color:#2A2A2A;">Mais Vendidos</h2>
+    </div>
+
+    <div id="prod-grid" class="prod-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;"></div>
+
+    <div style="text-align:center; margin-top:44px;">
+      <button class="btn-outline-m" style="background:transparent; color:#C1325C; border:2px solid #C1325C; padding:15px 44px; border-radius:50px; font-size:14px; font-weight:600; font-family:'Poppins',sans-serif; letter-spacing:0.04em;">Ver todos os produtos</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSTAGRAM / LIFESTYLE ═══ -->
+<section class="reveal" style="background:#1e1e1e; padding:88px 28px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:52px;">
+      <h2 style="font-family:'Great Vibes',cursive; font-size:62px; color:#fff; line-height:1.15; margin-bottom:14px;">Seu estilo, sua arte.</h2>
+      <p style="font-size:14px; color:rgba(255,255,255,0.5); letter-spacing:0.06em;">Siga @makeart.oficial e inspire-se todos os dias.</p>
+    </div>
+    <div id="insta-grid" class="insta-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:44px;"></div>
+    <div style="text-align:center;">
+      <button class="btn-m" style="background:#C1325C; color:#fff; border:none; padding:15px 40px; border-radius:50px; font-size:14px; font-weight:600; font-family:'Poppins',sans-serif; display:inline-flex; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(193,50,92,0.4);">
+        <span style="font-size:18px;">📱</span>
+        @makeart.oficial — Siga a gente
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="reveal" style="background:#F5E6EC; padding:88px 28px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:52px;">
+      <div style="color:#D4AF37; font-size:11px; font-weight:600; letter-spacing:0.28em; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:10px;">
+        <span style="display:block; width:32px; height:1px; background:#D4AF37; opacity:0.7;"></span>
+        Quem ama, conta
+        <span style="display:block; width:32px; height:1px; background:#D4AF37; opacity:0.7;"></span>
+      </div>
+      <h2 style="font-size:28px; font-weight:700; color:#2A2A2A;">O que nossas clientes dizem</h2>
+    </div>
+    <div style="overflow:hidden; position:relative;">
+      <div id="testimonial-track" style="display:flex; width:300%; transition:transform 0.55s cubic-bezier(0.4,0,0.2,1);"></div>
+    </div>
+    <div id="testimonial-dots" style="display:flex; justify-content:center; gap:10px; margin-top:36px;"></div>
+  </div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<section style="background:#C1325C; padding:88px 28px; position:relative; overflow:hidden;">
+  <div style="position:absolute; top:-20px; left:-40px; font-family:'Great Vibes',cursive; font-size:240px; color:rgba(255,255,255,0.05); pointer-events:none; user-select:none; line-height:1; white-space:nowrap;">Makeart</div>
+  <div style="position:absolute; bottom:-30px; right:-20px; font-size:180px; opacity:0.04; pointer-events:none; user-select:none; line-height:1;">💄</div>
+  <div style="max-width:640px; margin:0 auto; text-align:center; position:relative; z-index:1;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px; color:rgba(255,255,255,0.5); letter-spacing:8px; font-size:10px;">• • •</div>
+    <h2 style="font-size:30px; font-weight:700; color:#fff; margin-bottom:14px; line-height:1.3;">Fique por dentro das novidades</h2>
+    <p style="font-size:15px; color:rgba(255,255,255,0.82); margin-bottom:36px; line-height:1.7;">Cadastre seu e-mail e ganhe <strong style="color:#fff; text-decoration:underline; text-decoration-color:rgba(255,255,255,0.4);">10% OFF</strong> na primeira compra.</p>
+    <div class="nl-form" style="display:flex; gap:10px; justify-content:center;">
+      <input id="nl-email" class="nl-input" type="email" placeholder="seu@email.com.br" style="flex:1; max-width:280px; padding:15px 22px; border:none; border-radius:50px; font-size:14px; font-family:'Poppins',sans-serif; outline:none; color:#2A2A2A; box-shadow:0 2px 16px rgba(0,0,0,0.12);" />
+      <button class="btn-m" onclick="handleNewsletter()" style="background:#2A2A2A; color:#fff; border:none; padding:15px 28px; border-radius:50px; font-size:14px; font-weight:600; font-family:'Poppins',sans-serif; white-space:nowrap; flex-shrink:0; box-shadow:0 4px 20px rgba(0,0,0,0.25);">Quero meu desconto</button>
+    </div>
+    <p style="font-size:11px; color:rgba(255,255,255,0.55); margin-top:16px;">Sem spam. Cancele quando quiser.</p>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer style="background:#1e1e1e; padding:72px 28px 36px;">
+  <div style="max-width:1320px; margin:0 auto;">
+    <div class="footer-cols" style="display:grid; grid-template-columns:2.2fr 1fr 1.2fr 1fr; gap:48px; margin-bottom:56px;">
+
+      <div class="footer-brand-col" style="display:flex; flex-direction:column; gap:18px;">
+        <div>
+          <span style="font-family:'Great Vibes',cursive; font-size:40px; color:#C1325C; display:block; line-height:1;">Makeart</span>
+          <span style="display:block; font-size:8px; color:#D4AF37; letter-spacing:5px; font-weight:600; margin-top:-2px;">BELEZA QUE INSPIRA</span>
+        </div>
+        <p style="font-size:13px; color:#666; line-height:1.8; max-width:230px;">Maquiagem e acessórios que celebram a sua beleza única, autêntica e poderosa.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div class="social-icon">📷</div>
+          <div class="social-icon">🎵</div>
+          <div class="social-icon">📌</div>
+          <div class="social-icon">▶</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:11px; font-weight:700; color:#fff; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.07);">Navegação</div>
+        <a href="#"           class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Início</a>
+        <a href="#loja"       class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Loja</a>
+        <a href="#categorias" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Categorias</a>
+        <a href="#"           class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Promoções</a>
+        <a href="#"           class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Sobre</a>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:11px; font-weight:700; color:#fff; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.07);">Atendimento</div>
+        <a href="mailto:contato@makeart.com.br" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">contato@makeart.com.br</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">WhatsApp</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">FAQ</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Trocas e Devoluções</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0;">Rastrear Pedido</a>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="font-size:11px; font-weight:700; color:#fff; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.07);">Redes Sociais</div>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0; display:flex; align-items:center; gap:8px;"><span>📷</span> Instagram</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0; display:flex; align-items:center; gap:8px;"><span>🎵</span> TikTok</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0; display:flex; align-items:center; gap:8px;"><span>📌</span> Pinterest</a>
+        <a href="#" class="footer-link" style="font-size:13px; color:#666; padding:5px 0; display:flex; align-items:center; gap:8px;"><span>▶</span> YouTube</a>
+      </div>
+    </div>
+
+    <div style="height:1px; background:linear-gradient(to right, transparent 0%, #D4AF37 30%, #D4AF37 70%, transparent 100%); margin-bottom:28px; opacity:0.3;"></div>
+
+    <div class="bottom-bar" style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+      <p style="font-size:12px; color:#555;">© 2026 MakeArt. Todos os direitos reservados. · CNPJ: 00.000.000/0001-00</p>
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:5px 12px; font-size:11px; color:#555; display:flex; align-items:center; gap:5px;">🔒 SSL</span>
+        <span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:5px 12px; font-size:11px; color:#555;">VISA</span>
+        <span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:5px 12px; font-size:11px; color:#555;">MASTER</span>
+        <span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:5px 12px; font-size:11px; color:#555;">PIX</span>
+        <span style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:6px; padding:5px 12px; font-size:11px; color:#555;">BOLETO</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ FLOATING WHATSAPP ═══ -->
+<a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="whatsapp-fab" style="position:fixed; bottom:32px; right:32px; z-index:900; width:58px; height:58px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; box-shadow:0 4px 24px rgba(37,211,102,0.42); text-decoration:none;" title="Fale no WhatsApp">💬</a>
+
+<script>
+  // === STATE ===
+  const state = {
+    cartCount: 0,
+    addedItems: {},
+    wishlisted: {}
+  };
+
+  // === DATA ===
+  const products = [
+    { id: 1, name: 'Batom Matte Perfeito', price: 'R$ 39,90', oldPrice: 'R$ 49,90', badge: 'Novo',   badgeColor: '#C1325C', emoji: '💄' },
+    { id: 2, name: 'Iluminador Glow',      price: 'R$ 54,90', oldPrice: 'R$ 69,90', badge: 'Oferta', badgeColor: '#D4AF37', emoji: '✨' },
+    { id: 3, name: 'Base Veludo 24h',      price: 'R$ 29,90', oldPrice: 'R$ 44,90', badge: 'Novo',   badgeColor: '#C1325C', emoji: '💋' },
+    { id: 4, name: 'Máscara de Cílios',    price: 'R$ 44,90', oldPrice: null,        badge: null,     badgeColor: null,      emoji: '👁️' },
+  ];
+
+  const categories = [
+    { name: 'Maquiagem',  emoji: '💄', bg: 'linear-gradient(155deg,#C1325C 0%,#6b1128 100%)' },
+    { name: 'Acessórios', emoji: '✨', bg: 'linear-gradient(155deg,#3d3d3d 0%,#1a1a1a 100%)' },
+    { name: 'Kits',       emoji: '🎨', bg: 'linear-gradient(155deg,#c9a430 0%,#7a5e0a 100%)' },
+    { name: 'Combos',     emoji: '🌸', bg: 'linear-gradient(155deg,#9b3d6a 0%,#C1325C 100%)' },
+  ];
+
+  const instaItems = [
+    { bg: '#F5E6EC', emoji: '💄' },
+    { bg: '#C1325C', emoji: '✨' },
+    { bg: '#D4AF37', emoji: '💋' },
+    { bg: '#2A2A2A', emoji: '🌸' },
+    { bg: '#8b1d3f', emoji: '👄' },
+    { bg: '#f0d4df', emoji: '💅' },
+  ];
+
+  const testimonials = [
+    { text: '"Amei a qualidade dos produtos! Chegou super rápido e embalado com carinho. Já é minha loja favorita!"',    author: 'Ana S.',      initial: 'A', color: '#C1325C' },
+    { text: '"O batom é lindo e muito duradouro. Recebi vários elogios no trabalho. Com certeza vou comprar mais!"',     author: 'Mariana F.', initial: 'M', color: '#9b3d6a' },
+    { text: '"Preço ótimo e qualidade profissional. Faço make todo dia e esses produtos são os melhores que já usei."',  author: 'Julia R.',   initial: 'J', color: '#D4AF37' },
+  ];
+
+  // === RENDER CATEGORIES ===
+  function renderCategories() {
+    document.getElementById('cat-grid').innerHTML = categories.map(c => `
+      <div class="cat-card" style="position:relative; aspect-ratio:3/4;">
+        <div class="cat-inner" style="position:absolute; inset:0; border-radius:18px; background:${c.bg};">
+          <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%); border-radius:18px;"></div>
+          <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); font-size:64px; opacity:0.18; user-select:none;">${c.emoji}</div>
+        </div>
+        <div style="position:absolute; bottom:0; left:0; right:0; padding:28px 22px; z-index:1;">
+          <div style="font-size:20px; font-weight:700; color:#fff; margin-bottom:10px; letter-spacing:0.04em;">${c.name}</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="cat-label-line" style="display:block; width:22px; height:1px; background:#D4AF37;"></span>
+            <span style="color:#D4AF37; font-size:12px; font-weight:600; letter-spacing:0.06em;">Ver tudo →</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // === RENDER PRODUCTS ===
+  function renderProducts() {
+    document.getElementById('prod-grid').innerHTML = products.map(p => {
+      const added     = !!state.addedItems[p.id];
+      const wished    = !!state.wishlisted[p.id];
+      return `
+        <div class="prod-card" style="background:#fff; border-radius:18px; border:1px solid #f0f0f0; overflow:hidden; position:relative; display:flex; flex-direction:column;">
+          ${p.badge ? `<div style="position:absolute; top:14px; left:14px; z-index:2; padding:5px 12px; border-radius:50px; font-size:10px; font-weight:700; color:#fff; background:${p.badgeColor};">${p.badge}</div>` : ''}
+          <button class="heart-btn" onclick="toggleWishlist(${p.id})" style="position:absolute; top:14px; right:14px; z-index:2; font-size:22px; padding:4px; line-height:1; background:none; border:none; cursor:pointer; transition:transform 0.2s ease; color:${wished ? '#C1325C' : '#ccc'};">${wished ? '♥' : '♡'}</button>
+          <div style="overflow:hidden; background:#F5E6EC; height:210px; display:flex; align-items:center; justify-content:center;">
+            <div class="prod-img" style="font-size:64px; display:flex; align-items:center; justify-content:center; width:100%; height:100%;">${p.emoji}</div>
+          </div>
+          <div style="padding:18px; flex:1; display:flex; flex-direction:column; gap:10px;">
+            <div style="font-size:14px; font-weight:600; color:#2A2A2A; line-height:1.4;">${p.name}</div>
+            <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+              ${p.oldPrice ? `<span style="font-size:12px; color:#bbb; text-decoration:line-through;">${p.oldPrice}</span>` : ''}
+              <span style="font-size:17px; font-weight:700; color:#C1325C;">${p.price}</span>
+            </div>
+            <div style="font-size:11px; color:#aaa;">ou 3x sem juros</div>
+            ${!added
+              ? `<button class="btn-m" onclick="addToCart(${p.id})" style="margin-top:auto; width:100%; background:#C1325C; color:#fff; border:none; border-radius:10px; padding:12px; font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; letter-spacing:0.04em;">+ Adicionar ao carrinho</button>`
+              : `<button style="margin-top:auto; width:100%; background:#22a85b; color:#fff; border:none; border-radius:10px; padding:12px; font-size:13px; font-weight:600; font-family:'Poppins',sans-serif; cursor:default;">✓ Adicionado!</button>`
+            }
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // === RENDER INSTAGRAM ===
+  function renderInsta() {
+    document.getElementById('insta-grid').innerHTML = instaItems.map(ig => `
+      <div class="insta-item" style="aspect-ratio:1; border-radius:12px; font-size:52px; display:flex; align-items:center; justify-content:center; background:${ig.bg};">
+        ${ig.emoji}
+        <div class="insta-overlay">📷</div>
+      </div>
+    `).join('');
+  }
+
+  // === TESTIMONIALS CAROUSEL ===
+  let activeTestimonial = 0;
+  let testimonialTimer  = null;
+
+  function renderTestimonials() {
+    document.getElementById('testimonial-track').innerHTML = testimonials.map(t => `
+      <div style="width:33.3333%; padding:0 14px; flex-shrink:0;">
+        <div style="background:#fff; border-radius:22px; padding:36px 32px; box-shadow:0 4px 24px rgba(193,50,92,0.08); display:flex; flex-direction:column; gap:20px;">
+          <div style="color:#D4AF37; font-size:22px; letter-spacing:3px;">★★★★★</div>
+          <p style="font-size:15px; color:#555; line-height:1.85; font-style:italic;">${t.text}</p>
+          <div style="display:flex; align-items:center; gap:14px; padding-top:16px; border-top:1px solid #f4e0e8;">
+            <div style="width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; color:#fff; flex-shrink:0; background:${t.color};">${t.initial}</div>
+            <div>
+              <div style="font-size:14px; font-weight:700; color:#2A2A2A;">${t.author}</div>
+              <div style="font-size:11px; color:#bbb; margin-top:2px;">Cliente verificada ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    updateCarousel();
+  }
+
+  function updateCarousel() {
+    document.getElementById('testimonial-track').style.transform = `translateX(-${activeTestimonial * 33.3333}%)`;
+    document.getElementById('testimonial-dots').innerHTML = testimonials.map((_, i) => `
+      <button class="dot-btn" onclick="goToTestimonial(${i})" style="width:10px; height:10px; border-radius:50%; border:none; padding:0; background:${i === activeTestimonial ? '#C1325C' : 'rgba(193,50,92,0.25)'}; transform:${i === activeTestimonial ? 'scale(1.35)' : 'scale(1)'}; transition:background 0.35s ease, transform 0.35s ease;"></button>
+    `).join('');
+  }
+
+  function goToTestimonial(i) {
+    activeTestimonial = i;
+    updateCarousel();
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(testimonialTimer);
+    testimonialTimer = setInterval(() => {
+      activeTestimonial = (activeTestimonial + 1) % testimonials.length;
+      updateCarousel();
+    }, 5000);
+  }
+
+  // === CART ===
+  function addToCart(id) {
+    state.cartCount++;
+    state.addedItems[id] = true;
+    document.getElementById('cart-badge').textContent = state.cartCount;
+    renderProducts();
+    setTimeout(() => {
+      state.addedItems[id] = false;
+      renderProducts();
+    }, 2000);
+  }
+
+  // === WISHLIST ===
+  function toggleWishlist(id) {
+    state.wishlisted[id] = !state.wishlisted[id];
+    renderProducts();
+  }
+
+  // === MOBILE MENU ===
+  function openMenu() {
+    document.getElementById('mobile-menu').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    document.getElementById('mobile-menu').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('hamburger-btn').addEventListener('click', openMenu);
+  document.getElementById('close-menu-btn').addEventListener('click', closeMenu);
+  document.getElementById('menu-backdrop').addEventListener('click', closeMenu);
+
+  // === NEWSLETTER ===
+  function handleNewsletter() {
+    const input = document.getElementById('nl-email');
+    if (!input.value || !input.value.includes('@')) { input.focus(); return; }
+    alert('Obrigada! Seu desconto de 10% OFF foi enviado para ' + input.value);
+    input.value = '';
+  }
+
+  // === SCROLL REVEAL ===
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // === INIT ===
+  renderCategories();
+  renderProducts();
+  renderInsta();
+  renderTestimonials();
+  resetTimer();
+</script>
+</body>
+</html>
